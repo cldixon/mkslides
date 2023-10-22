@@ -1,0 +1,11 @@
+deck:
+  name:  my-example-deck.md
+  description: First demo deck for mkslides project.
+  author: CL Dixon
+
+theme: default
+
+overwrite: True
+slides:
+  - slide1.md
+  - slide2.md
