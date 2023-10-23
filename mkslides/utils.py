@@ -23,3 +23,8 @@ def read_yaml(filename: str) -> dict:
     with open(filename, 'r') as in_file:
         data = yaml.safe_load(in_file)
     return data
+
+def write_yaml(filename: str, data: dict) -> None:
+    with open(filename, 'w') as out_file:
+        yaml.safe_dump(data, out_file)
+    return

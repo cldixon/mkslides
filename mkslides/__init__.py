@@ -1,1 +1,1 @@
-from .config import from_yaml, Config
+from .config import load_configs, MkSlidesConfig
