@@ -58,12 +58,13 @@ def load_configs(filename: str = DEFAULT_CONFIGS_FILENAME) -> MkSlidesConfig:
 
 def get_default_configuration() -> dict:
     return {
-        "deck": {
-            "name": "my-slide-deck.md",
-            "description": "First deck developed by mkslides.",
-            "author": "Your name here, please!"
-        },
+        "name": "my-slide-deck.md",
+        "description": "First deck developed by mkslides.",
+        "author": "Your name here, please!",
         "theme": "default",
+        "paginate": False,
+        "header": None,
+        "footer": None,
         "overwrite": True,
         "slides": [
             "slide_numero_uno.md"

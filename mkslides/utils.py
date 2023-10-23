@@ -26,5 +26,5 @@ def read_yaml(filename: str) -> dict:
 
 def write_yaml(filename: str, data: dict) -> None:
     with open(filename, 'w') as out_file:
-        yaml.safe_dump(data, out_file)
+        yaml.safe_dump(data, out_file, sort_keys=False)
     return
