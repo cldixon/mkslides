@@ -1,7 +1,7 @@
 import os 
 import click 
 
-from .config import load_configs
+from .config import load_configs, get_default_configuration
 from .deck import Deck 
 from .utils import write_yaml
 
@@ -12,11 +12,10 @@ DECKS_DIR = "decks"
 def mkslides():
     pass
 
+# TODO: argument/option to specify output marp file
 @mkslides.command('build')
-#@click.argument(['-o', '-output'])
 def build():
     config = load_configs()
-
 
     # check for existing slide deck if configs.overwrite is False
     if config.overwrite is False and os.path.exists(config.deck.name):
@@ -31,7 +30,7 @@ def build():
 @mkslides.command('new')
 @click.option('-f', '--filename')
 def new(filename: str):
-    new_config = {'name': "my-new-deck.md"}
+    new_config = get_default_configuration()
     write_yaml(filename, new_config)
 
 

@@ -1,10 +1,11 @@
-deck:
-  name:  my-example-deck.md
-  description: First demo deck for mkslides project.
-  author: CL Dixon
+name:  my-example-deck.md
+description: First demo deck for mkslides project.
+author: CL Dixon
 
 theme: default
-
+paginate: True
+header: brand new header
+footer: Null
 overwrite: True
 slides:
   - slide1.md
