@@ -1,1 +1,1 @@
-from .config import load_configs, MkSlidesConfig
+from .config import load_config, MkSlidesConfig

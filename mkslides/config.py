@@ -1,62 +1,73 @@
 import os 
-from typing import List, Optional
-from pydantic import BaseModel, StrictStr
-from pydantic.dataclasses import dataclass 
+from typing import List, Literal, Optional, Union
 
-from .utils import read_yaml
+from pydantic import BaseModel, field_validator, ValidationInfo
+from pydantic import StrictStr, StrictBool, FilePath, DirectoryPath
 
-DEFAULT_SLIDES_DIR = "slides"
-DEFAULT_CONFIGS_FILENAME = "mkslides.yml"
+from .utils import read_yaml, write_yaml
 
+## -- Default directory names ----
+class DEFAULT_DIRS:
+    SLIDE_DIR: StrictStr = "slides" 
+    OUTPUT_DIR: StrictStr = "decks"
 
-
-class Deck(BaseModel):
-    name: StrictStr
-    description: StrictStr
-    author: StrictStr
-
-@dataclass
-class Slides():
-    filenames: List[str]
-    _dir: StrictStr = DEFAULT_SLIDES_DIR
-
-    def __post_init__(self):
-        self.full_paths = [os.path.join(self._dir, f) for f in self.filenames]
-
-class Directives(BaseModel):
-    theme: StrictStr = "default"
-    paginate: bool = False
-    header: Optional[str] = None
-    footer: Optional[str] = None
+## -- Type annotations for MARP Directives ----
+class DirectivesConfig:
+    THEME = Literal["default", "gaia", "uncover"]
+    PAGINATE = StrictBool
+    HEADER = Optional[Union[str, None]]
+    FOOTER = Optional[Union[str, None]]
 
 
+## -- Configuration class for MkSlides ----
 class MkSlidesConfig(BaseModel):
-    deck: Deck
-    directives: Directives
-    overwrite: bool
-    slides: Slides
+    
+    name: StrictStr
+    """Name of slide deck. This will be used to create the (intermediate) markdown and rendered presentation file."""
+    
+    description: StrictStr
+    """Description of slide deck, target audience, etc. Not currently used in output slide deck."""
+    
+    author: StrictStr
+    """Author of slide deck/configuration. Not currently used in output slide deck."""
+    
+    output_dir: DirectoryPath = DEFAULT_DIRS.OUTPUT_DIR
+    
+    slide_dir: DirectoryPath = DEFAULT_DIRS.SLIDE_DIR
+    """Directory containing markdown slide files. Default is 'slides'."""
+    
+    slides: List[FilePath]
+    """List of filepaths for markdown slides. Needs to include full path to file, including `slide_dir` to pass validation."""
+    
+    @field_validator("slides", mode="before")
+    def validate_files_exist(cls, field_value, info:ValidationInfo):
+        assert info.data is not None 
+        return [os.path.join(info.data.get("slide_dir"), filename) for filename in field_value]
+
+    overwrite: StrictBool = False 
+    """Boolean flag to allow/block overwrite existing slide deck with same name."""
+    
+    theme: DirectivesConfig.THEME = "default"
+    """MARP theme option. (3) available options, including 'default', 'gaia', and 'uncover'."""
+
+    paginate: DirectivesConfig.PAGINATE = False
+    """MARP Directive to apply page numbers to individual slides."""
+    
+    header: DirectivesConfig.HEADER = None
+    """Optional string to use as header for slides. This is a MARP Directive."""
+    
+    footer: DirectivesConfig.FOOTER = None
+    """Optional string to use as footer for slides. This is a MARP Directive."""
 
 
-def load_configs(filename: str = DEFAULT_CONFIGS_FILENAME) -> MkSlidesConfig:
+def load_config(filename: FilePath) -> MkSlidesConfig:
+    """Loads YAML configuration file and initializes MkSlides Configuration class."""
     _configs = read_yaml(filename)
-    return MkSlidesConfig(
-        deck=Deck(
-            name=_configs.get("name"),
-            description=_configs.get("description"),
-            author=_configs.get("author")
-        ),
-        directives=Directives(
-            theme=_configs.get("theme"),
-            paginate=_configs.get("paginate"),
-            header=_configs.get("header"),
-            footer=_configs.get("footer")
-        ),
-        overwrite=_configs["overwrite"],
-        slides=Slides(filenames=_configs["slides"])
-    )
+    return MkSlidesConfig(**_configs)
 
 
 def get_default_configuration() -> dict:
+    """Returns dictionary of default/vanilla MkSlides configurations."""
     return {
         "name": "my-slide-deck.md",
         "description": "First deck developed by mkslides.",
@@ -70,3 +81,8 @@ def get_default_configuration() -> dict:
             "slide_numero_uno.md"
         ]
     }
+
+def create_new_configuration_file(filename: str) -> None:
+    _default_config = get_default_configuration()
+    write_yaml(filename, _default_config)
+    return

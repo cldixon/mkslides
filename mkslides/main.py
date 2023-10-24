@@ -1,11 +1,8 @@
 import os 
 import click 
 
-from .config import load_configs, get_default_configuration
+from .config import load_config, create_new_configuration_file
 from .deck import Deck 
-from .utils import write_yaml
-
-DECKS_DIR = "decks"
 
 
 @click.group()
@@ -14,24 +11,24 @@ def mkslides():
 
 # TODO: argument/option to specify output marp file
 @mkslides.command('build')
-def build():
-    config = load_configs()
+@click.option('-f', '--filename')
+def build(filename: str):
+    config = load_config(filename)
 
     # check for existing slide deck if configs.overwrite is False
-    if config.overwrite is False and os.path.exists(config.deck.name):
-        raise ValueError(f"Slide deck with name '{config.deck.name}' already exists and configs.overwrite set to 'False'.")
+    if config.overwrite is False and os.path.exists(config.name):
+        raise ValueError(f"Slide deck with name '{config.name}' already exists and configs.overwrite set to 'False'.")
     
     deck = Deck(config)
     deck.build()
     
-    click.echo(f"created '{config.deck.name}' from slides {', '.join(config.slides.filenames)}")
+    click.echo(f"created '{config.name}' from slides {', '.join([str(sl) for sl in config.slides])}")
 
 
 @mkslides.command('new')
 @click.option('-f', '--filename')
 def new(filename: str):
-    new_config = get_default_configuration()
-    write_yaml(filename, new_config)
+    create_new_configuration_file(filename)
 
 
 if __name__ == '__main__':

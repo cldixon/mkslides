@@ -2,7 +2,7 @@ name:  my-example-deck.md
 description: First demo deck for mkslides project.
 author: CL Dixon
 
-theme: default
+theme: uncover
 paginate: True
 header: brand new header
 footer: Null

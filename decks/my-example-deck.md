@@ -1,5 +1,5 @@
 ---
-theme: default
+theme: uncover
 paginate: true
 header: brand new header
 ---

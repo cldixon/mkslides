@@ -1,6 +1,7 @@
 import os 
 import subprocess
-from typing import List 
+from typing import List, Literal, Union
+from dataclasses import dataclass, asdict
 
 from .config import MkSlidesConfig, Directives
 from .utils import open_files, save_to_file
@@ -40,19 +41,34 @@ def compile_slides(slides: List[str]) -> str:
     # combine slides into single text
     return f"\n{SLIDE_SEP}\n\n".join(slides) 
 
+@dataclass
+class Directives:
+    theme: Literal["default", "gaia", "uncover"]
+    paginate: bool
+    header: Union[str, None]
+    footer: Union[str, None]
+
+    def to_dict(self) -> dict:
+        return asdict(self)
+
 
 class Deck:
     def __init__(self, config: MkSlidesConfig):
-        self.name: str = config.deck.name
-        self.description: str = config.deck.description
-        self.author: str = config.deck.author
-        self.directives: Directives = config.directives
-        self.output_dir: str = DEFAULT_DECK_DIR
-        self.slides: List[str] = open_files(config.slides.full_paths)
+        self.name: str = config.name
+        self.description: str = config.description
+        self.author: str = config.author 
+        self.output_dir: str = config.output_dir
+        self.slides: List[str] = open_files(config.slides)
+        self.directives: Directives = Directives(
+            theme=config.theme,
+            paginate=config.paginate,
+            header=config.header,
+            footer=config.footer
+        )   
 
     def assemble_slides(self) -> None:
         """Build deck from slides, configurations, etc."""
-        _directives = compile_directives(**self.directives.model_dump())
+        _directives = compile_directives(**self.directives.to_dict())
         _content = compile_slides(self.slides)
         self.content = f"{_directives}\n\n{_content}"
         
