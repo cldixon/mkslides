@@ -1,31 +1,9 @@
 import os 
 from typing import List, Literal, Union
 from dataclasses import dataclass, asdict
-from .marp import run_marp
+from .marp import compile_directives, compile_slides, run_marp
 from .config import MkSlidesConfig, OutputFormat
 from .utils import open_files, save_to_file
-
-SLIDE_SEP = "---"
-DEFAULT_DECK_DIR = "decks"
-
- 
-
-def compile_directives(theme: str = 'default', paginate: bool = False, header: str = None, footer: str = None) -> str:
-    # add theme
-    directives = [
-        f"theme: {theme}"
-    ]
-    # add pagination
-    if paginate is True:
-        directives.append("paginate: true")
-    # add header
-    if header:
-        directives.append(f"header: {header}")
-    if footer:
-        directives.append(f"footer: {footer}")
-
-    directives = "\n".join(directives)
-    return f"{SLIDE_SEP}\n{directives}\n{SLIDE_SEP}"
 
 
 @dataclass
@@ -37,11 +15,6 @@ class Directives:
 
     def to_dict(self) -> dict:
         return asdict(self)
-    
-
-def compile_slides(slides: List[str]) -> str:
-    # combine slides into single text
-    return f"\n{SLIDE_SEP}\n\n".join(slides) 
 
 
 class Deck:

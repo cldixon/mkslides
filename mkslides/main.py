@@ -22,7 +22,7 @@ def build(filename: str):
     deck = Deck(config)
     deck.build()
     
-    click.echo(f"created '{config.name}' from slides {', '.join([str(sl) for sl in config.slides])}")
+    click.echo(f"created '{config.name}' from {len(config.slides):,} slides.")
 
 
 @mkslides.command('new')
