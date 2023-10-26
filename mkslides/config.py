@@ -18,6 +18,12 @@ class DirectivesConfig:
     HEADER = Optional[Union[str, None]]
     FOOTER = Optional[Union[str, None]]
 
+class MarpOutputFormats:
+    HTML: str = "html"
+    PDF: str = "pdf"
+    PPTX: str = "pptx"
+
+OutputFormat = Union[str, List[str]]
 
 ## -- Configuration class for MkSlides ----
 class MkSlidesConfig(BaseModel):
@@ -30,6 +36,9 @@ class MkSlidesConfig(BaseModel):
     
     author: StrictStr
     """Author of slide deck/configuration. Not currently used in output slide deck."""
+    
+    output_format: OutputFormat = MarpOutputFormats.HTML
+    """Output format for deck. Can be a single or list of values. MARP supports HTML (default), PDF, and """
     
     output_dir: DirectoryPath = DEFAULT_DIRS.OUTPUT_DIR
     
@@ -72,6 +81,7 @@ def get_default_configuration() -> dict:
         "name": "my-slide-deck.md",
         "description": "First deck developed by mkslides.",
         "author": "Your name here, please!",
+        "output_format": "html",
         "theme": "default",
         "paginate": False,
         "header": None,
