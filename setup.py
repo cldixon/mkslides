@@ -1,8 +1,14 @@
 from setuptools import setup, find_packages
 
+# get version
+with open('VERSION.md', 'r') as in_file:
+    VERSION = in_file.read()
+    in_file.close()
+
+
 setup(
     name='mkslides',
-    version='0.1.0',
+    version=VERSION,
     packages=find_packages(),
     include_package_data=True,
     install_requires=[
