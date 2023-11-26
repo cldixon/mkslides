@@ -1,10 +1,9 @@
 import os 
 from typing import List, Literal, Union
 from dataclasses import dataclass, asdict
-from .marp import compile_directives, compile_slides, run_marp
-from .config import MkSlidesConfig, OutputFormat
 from .utils import open_files, save_to_file
-
+from .config import MkSlidesConfig, OutputFormat
+from .marp import compile_directives, compile_slides, run_marp
 
 @dataclass
 class Directives:
@@ -41,8 +40,7 @@ class Deck:
     
     def save_markdown_slides(self) -> None:
         save_to_file(
-            os.path.join(self.output_dir, self.name), 
-            self.content
+            os.path.join(self.output_dir, self.name), self.content
         )
 
     def convert_with_marp(self):
@@ -57,3 +55,4 @@ class Deck:
         self.assemble_slides()
         self.save_markdown_slides()
         self.convert_with_marp()
+        return 

@@ -1,0 +1,11 @@
+name: my-slide-deck.md
+description: First deck developed by mkslides.
+author: Your name here, please!
+output_format: html
+theme: default
+paginate: false
+header: null
+footer: null
+overwrite: true
+slides:
+- cover.md

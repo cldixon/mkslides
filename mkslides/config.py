@@ -6,8 +6,10 @@ from pydantic import StrictStr, StrictBool, FilePath, DirectoryPath
 
 from .utils import read_yaml, write_yaml
 
+
 ## -- Default directory names ----
-class DEFAULT_DIRS:
+class DefaultPaths:
+    CONFIG_FILENAME: StrictStr = "mkslides.yml"
     SLIDE_DIR: StrictStr = "slides" 
     OUTPUT_DIR: StrictStr = "decks"
 
@@ -40,9 +42,9 @@ class MkSlidesConfig(BaseModel):
     output_format: OutputFormat = MarpOutputFormats.HTML
     """Output format for deck. Can be a single or list of values. MARP supports HTML (default), PDF, and """
     
-    output_dir: DirectoryPath = DEFAULT_DIRS.OUTPUT_DIR
+    output_dir: DirectoryPath = DefaultPaths.OUTPUT_DIR
     
-    slide_dir: DirectoryPath = DEFAULT_DIRS.SLIDE_DIR
+    slide_dir: DirectoryPath = DefaultPaths.SLIDE_DIR
     """Directory containing markdown slide files. Default is 'slides'."""
     
     slides: List[FilePath]
@@ -88,11 +90,11 @@ def get_default_configuration() -> dict:
         "footer": None,
         "overwrite": True,
         "slides": [
-            "slide_numero_uno.md"
+            "cover.md"
         ]
     }
 
-def create_new_configuration_file(filename: str) -> None:
+def initialize_configuration_file() -> None:
     _default_config = get_default_configuration()
-    write_yaml(filename, _default_config)
+    write_yaml(DefaultPaths.CONFIG_FILENAME, _default_config)
     return
