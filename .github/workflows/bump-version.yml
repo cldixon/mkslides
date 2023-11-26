@@ -21,7 +21,7 @@ jobs:
       uses: FragileTech/bump-version@main
       with:
         current_version: "${{ env.current_version }}"
-        files: version.md
+        files: VERSION.md
         commit_name: Your Company Bot
         commit_email: bot@your-company.com
         login: your-bot-login
