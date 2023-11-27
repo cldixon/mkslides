@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "mkslides"
-version = "0.1.1"
+version = "0.1.2"
 description = "Mkdocs for slides. Decouple slides from their decks with markdown and yaml configuration."
 authors = ["cldixon"]
 readme = "README.md"
