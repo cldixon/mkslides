@@ -1,6 +1,8 @@
 # MkSlides
 
-Mkdocs for slides. Modular and re-usable slides, freed from their decks. Build with with simple config files.
+Mkdocs for slides. Modular and re-usable slides, freed from their decks. Build with with simple config files. This tool utilizes the [marp](https://marp.app) ecosystem to create markdown-based slides built with independent, self-contained and individual markdown slides. Using a configuration file, similar to mkdocs' `mkdocs.yml`, we _build_ slide decks from specified markdown slide files. This way, multiple decks can use and re-use slides, and decks can be built on the fly to keep content up to date.
+
+:vertical_traffic_light:, :warning: and :construction: : This is a slide project and under occasional development when I have time. I also use this project to test out new tools before bringing them to work.
 
 ### Usage
 
