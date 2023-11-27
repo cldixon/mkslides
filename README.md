@@ -40,7 +40,7 @@ Next, we can build our slide deck.
 
 
 ```sh
-$ mkslides build 
+$ mkslides build
 ```
 
 This will create a new directory `decks`, in which the output artifacts of our slide deck are stored. Currently, this command will compile the slides listed in the `mkslides.yml` into a single markdown, marp-style file, and is then converted into marp-supported output formats. HTML is the default, but you can also specify PDF or PPTX in the configurations file.

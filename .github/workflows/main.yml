@@ -1,0 +1,31 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+    branches:
+      - "**"
+
+
+jobs:
+  tests:
+    name: Tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python - -y
+
+      - name: Configure poetry
+        run: poetry config virtualenvs.in-project true
+
+      - name: Install dependencies
+        run: poetry install
+
+      - name: Run pytest
+        run: poetry run pytest

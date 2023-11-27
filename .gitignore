@@ -2,7 +2,8 @@
 .vscode
 
 __pycache__
-
+.pytest_cache
+#poetry.lock
 *.egg-info
 
 example/decks

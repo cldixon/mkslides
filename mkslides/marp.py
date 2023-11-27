@@ -1,16 +1,20 @@
 import subprocess
-from typing import List, Literal 
+from typing import List, Literal
 
 from .config import MarpOutputFormats
 
 SLIDE_SEP = "---"
 ALLOW_LOCAL_ACCESS: str = "--allow-local-access"
 
-def compile_directives(theme: str = 'default', paginate: bool = False, header: str = None, footer: str = None) -> str:
+
+def compile_directives(
+    theme: str = "default",
+    paginate: bool = False,
+    header: str = None,
+    footer: str = None,
+) -> str:
     # add theme
-    directives = [
-        f"theme: {theme}"
-    ]
+    directives = [f"theme: {theme}"]
     # add pagination
     if paginate is True:
         directives.append("paginate: true")
@@ -26,7 +30,8 @@ def compile_directives(theme: str = 'default', paginate: bool = False, header: s
 
 def compile_slides(slides: List[str]) -> str:
     # combine slides into single text
-    return f"\n{SLIDE_SEP}\n\n".join(slides) 
+    return f"\n{SLIDE_SEP}\n\n".join(slides)
+
 
 def run_marp(filepath: str, output_format: Literal["html", "pdf", "pptx"]) -> None:
     """Run MARP as Python subprocess, with provided filename."""
@@ -37,9 +42,5 @@ def run_marp(filepath: str, output_format: Literal["html", "pdf", "pptx"]) -> No
         _command.extend(["--pptx", ALLOW_LOCAL_ACCESS])
     else:
         pass
-    _ = subprocess.run(
-        _command,
-        stdout=subprocess.DEVNULL,
-        stderr=subprocess.STDOUT
-    )
+    _ = subprocess.run(_command, stdout=subprocess.DEVNULL, stderr=subprocess.STDOUT)
     return

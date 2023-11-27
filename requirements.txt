@@ -1,5 +1,0 @@
-click
-rich
-pydantic
-pytest
-PyYAML
