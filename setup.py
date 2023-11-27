@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 with open('VERSION.md', 'r') as in_file:
     VERSION = in_file.read()
     in_file.close()
-
+VERSION = "0.0.2"
 
 setup(
     name='mkslides',
